@@ -1,0 +1,39 @@
+{
+  "name": "owasp-codex-skill",
+  "version": "1.0.0",
+  "description": "A reusable Codex skill for OWASP Top 10 security reviews.",
+  "bin": {
+    "owasp-codex-skill": "./bin/owasp-codex-skill.js"
+  },
+  "files": [
+    "SKILL.md",
+    "agents",
+    "references",
+    "bin",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node ./bin/owasp-codex-skill.js --help"
+  },
+  "keywords": [
+    "codex",
+    "skill",
+    "owasp",
+    "security",
+    "security-review",
+    "secure-code-review"
+  ],
+  "author": "LirielC",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LirielC/owasp-codex-skill.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LirielC/owasp-codex-skill/issues"
+  },
+  "homepage": "https://github.com/LirielC/owasp-codex-skill#readme",
+  "engines": {
+    "node": ">=16"
+  }
+}

@@ -39,6 +39,9 @@ https://owasp.org/Top10/2025/
 
 ```text
 owasp-codex-skill/
+├── bin/
+│   └── owasp-codex-skill.js
+├── package.json
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
@@ -60,6 +63,10 @@ The main Codex skill file. It contains the trigger metadata and the core review 
 ### `agents/openai.yaml`
 
 UI-facing metadata for environments that display skill names, descriptions, and default prompts.
+
+### `bin/owasp-codex-skill.js`
+
+The npm CLI used to install the skill into your Codex skills directory.
 
 ### `references/owasp-top-10-review-map.md`
 
@@ -87,7 +94,53 @@ A reusable security review report structure for final output, including:
 
 ## Installation
 
-Install the skill by cloning this repository into your Codex skills directory.
+Install the package globally:
+
+```bash
+npm install -g owasp-codex-skill
+```
+
+Then install the Codex skill:
+
+```bash
+owasp-codex-skill install
+```
+
+By default, the installer copies the skill into:
+
+```bash
+~/.codex/skills/owasp-codex-skill
+```
+
+If `CODEX_HOME` is set, the installer uses:
+
+```bash
+$CODEX_HOME/skills/owasp-codex-skill
+```
+
+To replace an existing installation:
+
+```bash
+owasp-codex-skill install --force
+```
+
+To install into a custom directory:
+
+```bash
+owasp-codex-skill install --target /path/to/skills/owasp-codex-skill
+```
+
+You can print the default installation path with:
+
+```bash
+owasp-codex-skill path
+```
+
+After installation, restart or reload your Codex session if your environment does not automatically discover newly added skills.
+
+Note: this command works after the package is published to npm.
+
+### Install from Git
 
 ```bash
 mkdir -p ~/.codex/skills
@@ -100,8 +153,6 @@ If you use a custom `CODEX_HOME`, install it under that location instead:
 mkdir -p "$CODEX_HOME/skills"
 git clone https://github.com/LirielC/owasp-codex-skill.git "$CODEX_HOME/skills/owasp-codex-skill"
 ```
-
-After installation, restart or reload your Codex session if your environment does not automatically discover newly added skills.
 
 ## Usage
 
@@ -180,6 +231,32 @@ This skill is not a replacement for:
 It is a reusable review workflow for Codex. The quality of results depends on repository access, runtime context, available configuration, test coverage, and the specificity of the user request.
 
 ## Development
+
+Test the npm CLI locally:
+
+```bash
+npm test
+```
+
+Install the local package globally during development:
+
+```bash
+npm install -g .
+owasp-codex-skill install --force
+```
+
+Check the package contents before publishing:
+
+```bash
+npm pack --dry-run
+```
+
+Publish to npm:
+
+```bash
+npm login
+npm publish --access public
+```
 
 Validate the skill structure with the Codex skill validator:
 
