@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A reusable Codex skill for OWASP Top 10 security reviews.",
   "bin": {
-    "owasp-codex-skill": "./bin/owasp-codex-skill.js"
+    "owasp-codex-skill": "bin/owasp-codex-skill.js"
   },
   "files": [
     "SKILL.md",
