@@ -1,6 +1,6 @@
 ---
 name: owasp-codex-skill
-description: Perform application security reviews of codebases, pull requests, APIs, configuration, and dependency changes using the OWASP Top 10 as the review frame. Use when Codex is asked to audit code for security bugs, perform secure code review, identify OWASP Top 10 risks, review authentication/authorization/input handling/secrets/dependencies/configuration/logging, or produce a security findings report with evidence and remediation guidance.
+description: Act as an autonomous, read-only application-security reviewer for codebases, pull requests, APIs, configuration, and dependencies using OWASP Top 10. Use when Codex is asked to audit code, delegate a security-review subtask, identify OWASP risks, safely coordinate optional open-source scanners, validate scanner candidates, or produce an evidence-backed security report with remediation guidance.
 ---
 
 # OWASP Codex Skill
@@ -8,6 +8,14 @@ description: Perform application security reviews of codebases, pull requests, A
 ## Overview
 
 Use this skill to run a practical secure code review aligned to OWASP Top 10:2025. Treat OWASP as the taxonomy, not as a checklist substitute for reading the code path end to end.
+
+## Operating Contract
+
+- Work as an independent security-review track. If agent delegation is available and the user requested parallel or subagent work, delegate the review with a narrow, read-only scope and return one consolidated report.
+- Never change application code during a review unless the user separately requests remediation.
+- Never install tools, execute remote rules, upload source/results, scan a live target, or enable telemetry without explicit user approval.
+- Run only already-installed tools against a local repository. Treat every automated result as an unverified candidate.
+- Keep secrets out of output. Redact values and include only the minimum location and identifier needed to remediate.
 
 ## Review Workflow
 
@@ -28,17 +36,22 @@ Use this skill to run a practical secure code review aligned to OWASP Top 10:202
    - Read `references/owasp-top-10-review-map.md` when you need category-specific prompts, common code smells, and remediation cues.
    - Use the current OWASP Top 10:2025 categories by default. If the user or organization requires OWASP Top 10:2021, say so explicitly and map findings to that version.
 
-4. Verify before reporting:
+4. Select optional tooling:
+   - Read `references/open-source-tooling.md` before invoking any scanner.
+   - Use the smallest relevant set. Record tool name, version, command class, network behavior, exit status, and coverage.
+   - Prefer local, machine-readable output (SARIF/JSON). Do not equate scanner severity with final severity.
+
+5. Verify before reporting:
    - Do not report generic best practices without a concrete affected path, source location, and exploit or failure scenario.
    - Distinguish confirmed issues from plausible risks that need runtime validation.
    - Check for existing compensating controls in middleware, framework config, validators, policies, database constraints, infrastructure, and tests.
    - Avoid destructive testing. Do not exploit live systems, exfiltrate secrets, brute force credentials, or run intrusive scanners unless the user explicitly authorizes that scope.
 
-5. Report findings in a security-review format:
+6. Report findings in a security-review format:
    - Lead with findings ordered by severity.
    - Include file/line references, affected flow, OWASP category, exploit scenario, impact, remediation, and confidence.
    - Include "No finding" areas only when useful to show meaningful coverage.
-   - Read `references/report-template.md` for the preferred report structure.
+   - Read `references/report-template.md` for the required report structure and quality gate.
 
 ## Severity Guidance
 
@@ -63,7 +76,10 @@ Use concise, evidence-backed findings. Do not inflate issue counts with duplicat
 
 When no issues are found, say that clearly and list the review scope plus residual risks, such as untested runtime configuration, missing threat model, or dependencies not installed.
 
+Do not claim the application is secure, compliant, or vulnerability-free. Report the tested revision and scope. Separate confirmed findings, needs-validation candidates, and tool errors. A tool failure is a coverage gap, not a clean result.
+
 ## References
 
 - `references/owasp-top-10-review-map.md`: category prompts and code-review checks for OWASP Top 10:2025.
 - `references/report-template.md`: reusable output format for security review reports.
+- `references/open-source-tooling.md`: allowlisted open-source tools, safe invocation rules, and selection guidance.

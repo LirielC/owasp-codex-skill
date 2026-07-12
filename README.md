@@ -2,7 +2,9 @@
 
 A reusable Codex skill for application security reviews based on the OWASP Top 10.
 
-This skill helps Codex review codebases, pull requests, APIs, configuration, and dependency changes with a practical secure-code-review workflow. It uses the OWASP Top 10 as the review taxonomy while still requiring concrete code evidence, affected flows, impact, and remediation guidance for every finding.
+This skill helps Codex act as an independent, read-only security-review track for codebases, pull requests, APIs, configuration, and dependency changes. It uses OWASP Top 10 as the taxonomy while requiring concrete code evidence, affected flows, impact, and remediation for every confirmed finding.
+
+Optional open-source scanners can complement the review, but the skill never installs or runs them implicitly. Source uploads, remote rules, database downloads, network access, telemetry, and live-target scanning require explicit approval.
 
 ## What This Skill Does
 
@@ -45,7 +47,10 @@ owasp-codex-skill/
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
+├── test/
+│   └── cli.test.js
 └── references/
+    ├── open-source-tooling.md
     ├── owasp-top-10-review-map.md
     └── report-template.md
 ```
@@ -91,6 +96,10 @@ A reusable security review report structure for final output, including:
 - Remediation
 - Confidence
 - Coverage and residual risk
+
+### `references/open-source-tooling.md`
+
+The local-first policy and allowlist for optional OpenGrep, Gitleaks, OSV-Scanner, Trivy, Checkov, and Syft integrations. Scanner output remains unverified until Codex traces and confirms the affected flow.
 
 ## Installation
 
@@ -238,6 +247,12 @@ Test the npm CLI locally:
 npm test
 ```
 
+Check the packaged skill files without installing or executing scanners:
+
+```bash
+npm run validate
+```
+
 Install the local package globally during development:
 
 ```bash
@@ -258,16 +273,10 @@ npm login
 npm publish --access public
 ```
 
-Validate the skill structure with the Codex skill validator:
+Validate the skill structure with the Codex skill validator (adjust the path for your Codex installation):
 
 ```bash
-python3 /home/arch/.codex/skills/.system/skill-creator/scripts/quick_validate.py /path/to/owasp-codex-skill
-```
-
-For this repository, from the same machine where it was created:
-
-```bash
-python3 /home/arch/.codex/skills/.system/skill-creator/scripts/quick_validate.py /home/arch/owasp-codex-skill
+python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py /path/to/owasp-codex-skill
 ```
 
 ## Contributing
@@ -286,4 +295,4 @@ Avoid adding broad documentation that Codex does not need while performing a rev
 
 ## License
 
-No license has been added yet. Add one before distributing or accepting external contributions if you want explicit reuse terms.
+Apache License 2.0. Optional tools, rule packs, advisory databases, and generated artifacts retain their own licenses.

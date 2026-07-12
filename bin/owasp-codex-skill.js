@@ -11,11 +11,13 @@ function usage() {
   console.log(`Usage:
   owasp-codex-skill install [--force] [--target <path>]
   owasp-codex-skill path
+  owasp-codex-skill doctor
   owasp-codex-skill --help
 
 Commands:
   install        Install the Codex skill into the Codex skills directory.
   path           Print the default installation path.
+  doctor         Check skill files and optional local security tools.
 
 Options:
   --force        Replace an existing installation.
@@ -28,6 +30,28 @@ Default target:
 function defaultTarget() {
   const codexHome = process.env.CODEX_HOME || path.join(os.homedir(), ".codex");
   return path.join(codexHome, "skills", SKILL_NAME);
+}
+
+function doctor() {
+  const required = [
+    "SKILL.md",
+    path.join("agents", "openai.yaml"),
+    path.join("references", "owasp-top-10-review-map.md"),
+    path.join("references", "report-template.md"),
+    path.join("references", "open-source-tooling.md"),
+  ];
+  let healthy = true;
+
+  for (const entry of required) {
+    const present = fs.existsSync(path.join(PROJECT_ROOT, entry));
+    console.log(`${present ? "ok" : "missing"}  ${entry}`);
+    healthy = healthy && present;
+  }
+
+  console.log("");
+  console.log("Optional tools are never installed or executed by this command:");
+  console.log("  opengrep, gitleaks, osv-scanner, trivy, checkov, syft");
+  if (!healthy) process.exitCode = 1;
 }
 
 function copyRecursive(source, target) {
@@ -116,6 +140,11 @@ function main() {
 
     if (command === "path") {
       console.log(defaultTarget());
+      return;
+    }
+
+    if (command === "doctor") {
+      doctor();
       return;
     }
 

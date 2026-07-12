@@ -1,42 +1,56 @@
 # Security Review Report Template
 
-Use this structure for final answers unless the user requests a different format.
+Use this structure unless the user requests another format.
+
+## Executive summary
+
+State the reviewed revision, scope, assessment type, and counts by status/severity. Never state that the target is secure or vulnerability-free.
 
 ## Findings
 
-List confirmed findings first, ordered by severity.
-
-For each finding:
+List confirmed findings first, ordered by severity and exploitability. Group duplicates by root cause.
 
 ```markdown
-### [Severity] Short Title
+### SEC-001 — [Severity] Short title
 
-- OWASP: Axx:YYYY Category
-- Evidence: `path/to/file.ext:line`
-- Affected flow: concise description of the entry point, trust boundary, and sink/security decision
-- Impact: what an attacker can do and under what role/conditions
-- Exploit scenario: concrete, minimal scenario showing why the issue is reachable
-- Remediation: specific code/config/design change
-- Confidence: High/Medium/Low, with the reason if not High
+- Status: Confirmed | Needs validation
+- OWASP: Axx:2025 Category
+- CWE: CWE-nnn (only when the mapping is defensible)
+- Confidence: High | Medium | Low
+- Evidence: `path/to/file.ext:line` and a concise, redacted code/config fact
+- Affected component: component and entry point
+- Data flow: attacker-controlled source -> transformations/controls -> sensitive sink/decision
+- Preconditions: attacker role, deployment assumptions, and required state
+- Impact: concrete confidentiality, integrity, or availability outcome
+- Reproduction: safe, minimal local validation steps; no weaponized payloads by default
+- Remediation: root-cause fix plus a regression-test invariant
+- References: primary standard/advisory links only
 ```
 
-## Coverage
+Use CVSS only when the user needs it and the deployment facts are known. Include the vector, version, and assumptions; never copy a scanner score blindly.
 
-Summarize what was reviewed:
-- Entry points and routes/controllers.
-- Auth/authz paths.
-- Input-to-sink paths.
-- Config/deployment/dependencies.
-- Tests or commands run.
+## Dismissed candidates
 
-## No Finding Areas
+Summarize meaningful false positives and compensating controls. Do not list every scanner match.
 
-Mention only meaningful checks that reduce uncertainty, such as "admin routes use shared policy middleware and representative routes were traced."
+## Coverage and methodology
 
-## Residual Risk
+- Revision/commit and directories reviewed.
+- Entry points, auth/authz, input-to-sink paths, configuration, dependencies, and failure paths reviewed.
+- Tests and scanners run, including versions and sanitized command class.
+- Tool failures, skipped tools, exclusions, and reason.
 
-State what was not verified:
-- Runtime secrets/configuration.
-- Infrastructure policies.
-- Dynamic behavior not covered by tests.
-- Dependency advisories unavailable because dependencies were not installed or network access was not available.
+## Residual risk
+
+State unverified runtime configuration, infrastructure, external services, business invariants, dynamic behavior, and dependency reachability.
+
+## Quality gate
+
+Before delivery, verify:
+
+- Every reported issue has a location, reachable scenario, impact, and specific fix.
+- Secret values and sensitive personal data are redacted.
+- Scanner candidates are not presented as confirmed without manual validation.
+- Severity reflects actual preconditions and compensating controls.
+- Duplicate symptoms are grouped by root cause.
+- Clean scans and tool failures are described accurately.

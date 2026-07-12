@@ -1,4 +1,4 @@
 interface:
   display_name: "OWASP Code Review"
-  short_description: "Review code against OWASP Top 10 risks"
-  default_prompt: "Use $owasp-codex-skill to review this codebase for OWASP Top 10 security risks."
+  short_description: "Autonomous, local-first OWASP security review"
+  default_prompt: "Use $owasp-codex-skill as an independent read-only reviewer. Audit this codebase, safely use only approved local open-source tools when useful, validate their candidates manually, and produce an evidence-backed OWASP report."

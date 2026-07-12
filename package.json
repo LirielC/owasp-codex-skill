@@ -1,6 +1,6 @@
 {
   "name": "owasp-codex-skill",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A reusable Codex skill for OWASP Top 10 security reviews.",
   "bin": {
     "owasp-codex-skill": "bin/owasp-codex-skill.js"
@@ -10,10 +10,15 @@
     "agents",
     "references",
     "bin",
-    "README.md"
+    "README.md",
+    "LICENSE",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "test"
   ],
   "scripts": {
-    "test": "node ./bin/owasp-codex-skill.js --help"
+    "test": "node --test",
+    "validate": "node ./bin/owasp-codex-skill.js doctor"
   },
   "keywords": [
     "codex",
