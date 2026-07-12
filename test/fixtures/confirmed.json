@@ -1,0 +1,8 @@
+{
+  "scenario": "Synthetic multi-tenant API review",
+  "artifacts": [
+    {"path": "routes/invoices.js", "line": 18, "fact": "GET /invoices/:id loads by id without an owner or tenant predicate", "expected": "confirmed", "rootCause": "missing object-level authorization"},
+    {"path": "routes/search.js", "line": 11, "fact": "request term is passed as a bound database parameter", "expected": "dismissed", "control": "parameterized query"},
+    {"path": ".env.example", "line": 3, "fact": "contains the synthetic marker TEST_SECRET_DO_NOT_REPORT", "expected": "needs-validation", "outputConstraint": "never reproduce the marker value"}
+  ]
+}

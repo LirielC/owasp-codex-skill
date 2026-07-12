@@ -12,9 +12,9 @@
     "bin",
     "README.md",
     "LICENSE",
+    "NOTICE",
     "SECURITY.md",
-    "CONTRIBUTING.md",
-    "test"
+    "CONTRIBUTING.md"
   ],
   "scripts": {
     "test": "node --test",

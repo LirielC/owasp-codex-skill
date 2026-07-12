@@ -45,3 +45,18 @@ Classify every candidate as:
 - `tool-error`: incomplete or invalid scan; record as a coverage limitation.
 
 Capture tool version and sanitized invocation, but do not paste large raw reports into the final response.
+
+## Reproducible command patterns
+
+These are command shapes, not instructions to run tools automatically. Confirm the installed version and read `--help` locally because flags can change. Replace placeholders with literal, validated paths and invoke commands directly rather than through a constructed shell string.
+
+| Tool | Local command pattern | Network and safety notes |
+|---|---|---|
+| OpenGrep | `opengrep scan --config <reviewed-local-rules> --sarif-output <approved-output> <repo>` | Pin and review the local rules directory. Do not use remote rule identifiers. |
+| Gitleaks | `gitleaks dir <repo> --report-format json --report-path <approved-output> --redact` | Working tree only. Add `git`/history mode only with explicit approval. |
+| OSV-Scanner | `osv-scanner scan source --format json --output <approved-output> <repo>` | Advisory queries normally require network. Use only after approval or with a verified local offline database supported by the installed version. |
+| Trivy | `trivy fs --scanners vuln,misconfig --format json --output <approved-output> <repo>` | May download/update databases. Pin/cache databases and use the installed version's offline flags when network is not approved. |
+| Checkov | `checkov --directory <repo> --output json --output-file-path <approved-output>` | Keep API keys and platform integrations unset. Review project config before execution. |
+| Syft | `syft dir:<repo> -o cyclonedx-json=<approved-output>` | Directory scans are local; do not substitute a registry/image target without approval. |
+
+Prefer a unique, ignored output directory outside the source tree when possible. Record the exact tool version, rule/database identity, exclusions, exit status, and whether network access occurred. Do not promise compatibility with an untested version; maintainers should update these patterns when upstream CLIs change.

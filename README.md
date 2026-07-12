@@ -44,11 +44,14 @@ owasp-codex-skill/
 ├── bin/
 │   └── owasp-codex-skill.js
 ├── package.json
+├── LICENSE
+├── NOTICE
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
 ├── test/
-│   └── cli.test.js
+│   ├── cli.test.js
+│   └── fixtures/
 └── references/
     ├── open-source-tooling.md
     ├── owasp-top-10-review-map.md
@@ -253,6 +256,12 @@ Check the packaged skill files without installing or executing scanners:
 npm run validate
 ```
 
+To explicitly query installed optional tool versions (this executes only each tool's version command, never a scan):
+
+```bash
+owasp-codex-skill doctor --tools
+```
+
 Install the local package globally during development:
 
 ```bash
@@ -295,4 +304,4 @@ Avoid adding broad documentation that Codex does not need while performing a rev
 
 ## License
 
-Apache License 2.0. Optional tools, rule packs, advisory databases, and generated artifacts retain their own licenses.
+Apache License 2.0. The package includes the complete license text and a project `NOTICE`. Optional tools, rule packs, advisory databases, and generated artifacts retain their own licenses.

@@ -1,0 +1,8 @@
+{
+  "scenario": "Synthetic API with central authorization",
+  "artifacts": [
+    {"path": "middleware/authorize.js", "line": 7, "fact": "all /account routes enforce authenticated subject and tenant predicate", "expected": "no-confirmed-finding"},
+    {"path": "routes/account.js", "line": 12, "fact": "route uses the authorized tenant-scoped repository", "expected": "no-confirmed-finding"}
+  ],
+  "requiredResidualRisk": "runtime middleware registration is not verified by static fixture data"
+}
