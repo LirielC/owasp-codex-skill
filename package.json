@@ -24,7 +24,7 @@
     "secure-code-review"
   ],
   "author": "LirielC",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LirielC/owasp-codex-skill.git"
